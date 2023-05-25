@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\barang_masuk;
+use App\Models\Unit;
 use Illuminate\Http\Request;
 
 class BarangMasukController extends Controller

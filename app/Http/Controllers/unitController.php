@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\barang;
-use App\Models\barang_masuk;
+use App\Models\Unit;
 use Illuminate\Http\Request;
 
-class BarangController extends Controller
+class unitController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,9 +14,9 @@ class BarangController extends Controller
      */
     public function index()
     {
-        $barang = barang::all();
+        $units =Unit::all();
         return response()->json([
-            "data" => $barang
+            "data" =>$units
         ]);
     }
 
@@ -39,13 +38,8 @@ class BarangController extends Controller
      */
     public function store(Request $request)
     {
-        $barang = barang::create([
-            "unit_id" => $request->unit_id,
-            "kode_barang" => $request->kode_barang,
-            "nama_barang" => $request->nama_barang
-        ]);
-        return response()->json([
-            "data" => $barang
+        $units = Unit::create([
+            'nama_unit'=>$request->nama_unit
         ]);
     }
 
@@ -68,11 +62,12 @@ class BarangController extends Controller
      */
     public function edit($id)
     {
-        $barang = barang::find($id);
+        $units =Unit::find($id);
         return response()->json([
-            "data" => $barang
+            "data" =>$units
         ]);
     }
+    
 
     /**
      * Update the specified resource in storage.
@@ -83,15 +78,10 @@ class BarangController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $barang = barang::find($id)
+        $units =Unit::find($id)
             ->update([
-                "unit_id" => $request->unit_id,
-                "kode_barang" => $request->kode_barang,
-                "nama_barang" => $request->nama_barang
+                'nama_unit'=>$request->nama_unit
             ]);
-        return response()->json([
-            "data" => $barang
-        ]);
     }
 
     /**
@@ -102,10 +92,10 @@ class BarangController extends Controller
      */
     public function destroy($id)
     {
-        $barang = barang::find($id)
+        $units = Unit::find($id)
             ->delete();
         return response()->json([
-            "data" => $barang
+            "data" =>$units
         ]);
     }
 }
