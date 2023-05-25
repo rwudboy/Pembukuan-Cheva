@@ -28,7 +28,7 @@ class BarangController extends Controller
      */
     public function create()
     {
-        //
+        return view("");
     }
 
     /**
@@ -39,7 +39,14 @@ class BarangController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $barang = barang::create([
+            "unit_id" => $request->unit_id,
+            "kode_barang" => $request->kode_barang,
+            "nama_barang" => $request->nama_barang
+        ]);
+        return response()->json([
+            "data" => $barang
+        ]);
     }
 
     /**
@@ -61,7 +68,10 @@ class BarangController extends Controller
      */
     public function edit($id)
     {
-        //
+        $barang = barang::find($id);
+        return response()->json([
+            "data" => $barang
+        ]);
     }
 
     /**
@@ -73,7 +83,15 @@ class BarangController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $barang = barang::find($id)
+            ->update([
+                "unit_id" => $request->unit_id,
+                "kode_barang" => $request->kode_barang,
+                "nama_barang" => $request->nama_barang
+            ]);
+        return response()->json([
+            "data" => $barang
+        ]);
     }
 
     /**
@@ -84,6 +102,10 @@ class BarangController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $barang = barang::find($id)
+            ->delete();
+        return response()->json([
+            "data" =>$barang
+        ]);
     }
 }
