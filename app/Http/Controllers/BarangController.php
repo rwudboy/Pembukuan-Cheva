@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\barang;
+use App\Models\barang_masuk;
 use Illuminate\Http\Request;
 
 class BarangController extends Controller
@@ -14,7 +15,7 @@ class BarangController extends Controller
      */
     public function index()
     {
-        $barang = barang::all();
+        $barang = barang_masuk::join('barangs', 'barang_masuks.barang_id', '=', 'barangs.id')->get();
 
         return response()->json([
             "data" => $barang
@@ -105,7 +106,7 @@ class BarangController extends Controller
         $barang = barang::find($id)
             ->delete();
         return response()->json([
-            "data" =>$barang
+            "data" => $barang
         ]);
     }
 }

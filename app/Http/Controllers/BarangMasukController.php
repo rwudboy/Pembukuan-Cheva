@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\barang_masuk;
 use Illuminate\Http\Request;
 
 class BarangMasukController extends Controller
@@ -13,7 +14,11 @@ class BarangMasukController extends Controller
      */
     public function index()
     {
-        //
+        $barangMasuk = barang_masuk::all();
+
+        return response()->json([
+            "data" =>$barangMasuk
+        ]);
     }
 
     /**
@@ -23,7 +28,7 @@ class BarangMasukController extends Controller
      */
     public function create()
     {
-        //
+        return view("");
     }
 
     /**
@@ -34,7 +39,16 @@ class BarangMasukController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $barangMasuk = barang_masuk::create([
+            'nama_supplier' =>$request->nama_supplier,
+            'barang_id' =>$request->barang_id,
+            'status' =>$request->status,
+            'keterangan' =>$request->keterangan,
+            'stok_masuk' =>$request->stok_masuk
+        ]);
+        return response()->json([
+            "data" =>$barangMasuk
+        ]);
     }
 
     /**
@@ -56,7 +70,10 @@ class BarangMasukController extends Controller
      */
     public function edit($id)
     {
-        //
+        $barangMasuk =barang_masuk::find($id);
+        return response()->json([
+            "data" =>$barangMasuk
+        ]);
     }
 
     /**
@@ -68,7 +85,17 @@ class BarangMasukController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $barangMasuk = barang_masuk::find($id)
+            ->update([
+                'nama_supplier' =>$request->nama_supplier,
+                'barang_id' =>$request->barang_id,
+                'status' =>$request->status,
+                'keterangan' =>$request->keterangan,
+                'stok_masuk' =>$request->stok_masuk
+            ]);
+        return response()->json([
+            "data" =>$barangMasuk
+        ]);
     }
 
     /**
@@ -79,6 +106,10 @@ class BarangMasukController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $barangMasuk = barang_masuk::find($id)
+            ->delete();
+        return response()->json([
+            "data" =>$barangMasuk
+        ]);
     }
 }
