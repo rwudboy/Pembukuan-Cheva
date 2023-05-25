@@ -2,16 +2,15 @@
   "ExpandedNodes": [
     "",
     "\\app",
-    "\\app\\Http",
-    "\\app\\Http\\Controllers",
+    "\\app\\Models",
+    "\\database",
+    "\\database\\migrations",
     "\\resources",
-    "\\resources\\js",
-    "\\storage",
-    "\\storage\\logs",
-    "\\tests",
+    "\\resources\\views",
+    "\\routes",
     "\\tests\\Feature",
     "\\tests\\Unit"
   ],
-  "SelectedNode": "\\app\\Http\\Middleware",
+  "SelectedNode": "\\app\\Http\\Controllers\\MyUnitController.php",
   "PreviewInSolutionExplorer": false
 }
