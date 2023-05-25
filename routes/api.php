@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\BarangController;
+use App\Http\Controllers\BarangMasukController;
+use App\Http\Controllers\unitController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,4 +19,28 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+Route::controller(BarangController::class)->group(function () {
+    Route::get("/barang", "index");
+    Route::get("/barang/create", "create");
+    Route::post("/barang/store", "store");
+    Route::get("/barang/edit/{id}", "edit");
+    Route::put("/barang/update/{id}", "update");
+    Route::delete("/barang/delete/{id}", "destroy");
+});
+Route::controller(BarangMasukController::class)->group(function () {
+    Route::get("/barang_masuk", "index");
+    Route::get("/barang_masuk/create", "create");
+    Route::post("/barang_masuk/store", "store");
+    Route::get("/barang_masuk/edit/{id}", "edit");
+    Route::put("/barang_masuk/update/{id}", "update");
+    Route::delete("/barang_masuk/delete/{id}", "destroy");
+});
+Route::controller(unitController::class)->group(function () {
+    Route::get("/unit", "index");
+    Route::get("/unit/create", "create");
+    Route::post("/unit/store", "store");
+    Route::get("/unit/edit/{id}", "edit");
+    Route::put("/unit/update/{id}", "update");
+    Route::delete("/unit/delete/{id}", "destroy");
 });
