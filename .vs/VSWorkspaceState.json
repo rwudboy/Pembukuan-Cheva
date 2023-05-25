@@ -2,10 +2,16 @@
   "ExpandedNodes": [
     "",
     "\\app",
-    "\\database",
-    "\\database\\migrations",
-    "\\database\\seeders"
+    "\\app\\Http",
+    "\\app\\Http\\Controllers",
+    "\\resources",
+    "\\resources\\js",
+    "\\storage",
+    "\\storage\\logs",
+    "\\tests",
+    "\\tests\\Feature",
+    "\\tests\\Unit"
   ],
-  "SelectedNode": "\\app",
+  "SelectedNode": "\\app\\Http\\Middleware",
   "PreviewInSolutionExplorer": false
 }
