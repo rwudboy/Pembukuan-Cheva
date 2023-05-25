@@ -10,6 +10,6 @@ class role extends Model
     use HasFactory;
     protected $table = 'units';
     protected $fillable = [
-        'nama_role';
+        'nama_role'
     ];
 }

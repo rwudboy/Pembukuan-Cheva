@@ -10,8 +10,8 @@ class barang_rusak extends Model
     use HasFactory;
     protected $table = 'units';
     protected $fillable = [
-        'barang_masuk_id';
-        'keterangan';
-        'stok_keluar';
+        'barang_masuk_id',
+        'keterangan',
+        'stok_keluar'
     ];
 }
