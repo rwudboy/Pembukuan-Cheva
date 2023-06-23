@@ -14,4 +14,10 @@ use App\Http\Controllers\MyUnitController;
 |
 */
 
-Route::get('/login', [MyUnitController::class, 'index2']);
+Route::controller(MyUnitController::class)->group(function () {
+    Route::get('/login', 'index2');
+    Route::post('/login', 'authentiocaating');
+    Route::post('/registerAdmin', 'registerAdmin');
+    Route::post('/registerSupplier', 'registerSupplier');
+    Route::get('/logout', 'logout');
+});

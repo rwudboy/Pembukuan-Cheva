@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Unit;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use PhpParser\Node\Stmt\Return_;
 
 class MyUnitController extends Controller
 {
@@ -18,13 +22,9 @@ class MyUnitController extends Controller
             'data' => $units
         ], 200);
     }
-    public function index2(){
-        $data['units'] = Unit::get();
-        return view("tes",$data);
-    }
     public function show($id)
     {
-        $unit = Unit::where('id',$id)->first();
+        $unit = Unit::where('id', $id)->first();
 
         if (!$unit) {
             return response()->json([
@@ -41,8 +41,9 @@ class MyUnitController extends Controller
         ], 200);
     }
 
-    public function getTokenCSRF(){
-        return response()->json(["token"=>csrf_token()]);
+    public function getTokenCSRF()
+    {
+        return response()->json(["token" => csrf_token()]);
     }
     public function store(Request $request)
     {
@@ -122,5 +123,68 @@ class MyUnitController extends Controller
             'message' => 'Data deleted successfully',
             'data' => null
         ]);
+    }
+    public function index2()
+    {
+        $data['units'] = Unit::get();
+        return view("tes", $data);
+    }
+    public function authentiocaating(Request $request)
+    {
+        $proses = $request->validate([
+            'username' => ['required'],
+            'password' => ['required'],
+        ]);
+        if (Auth::attempt($proses)) {
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerate();
+            return redirect('/tes');
+            if (Auth::user()->role_id == 1) {
+                return redirect("");
+            } else {
+                return redirect("");
+            }
+        };
+        return redirect("tes");
+    }
+    public function registerAdmin(Request $request)
+    {
+
+        $request->validate([
+            'nama_user' => 'required|unique:users|max:255',
+            'username' => 'required|max:255',
+            'password' => 'required|max:255'
+        ]);
+        $request['password'] = Hash::make($request->password);
+        $admin = User::create([$request->all()]);
+        // return redirect("");
+        return response()->json([
+            "data" => $admin
+        ]);
+    }
+    public function registerSupplier(Request $request)
+    {
+        if (Auth::user()->role_id == 2) {
+            $request->validate([
+                'nama_user' => 'required|unique:users|max:255',
+                'username' => 'required|max:255',
+                'password' => 'required|max:255'
+            ]);
+            $request['password'] = Hash::make($request->password);
+            $admin = User::create([$request->all()]);
+            // return redirect("");
+            return response()->json([
+                "data" => $admin
+            ]);
+        }
+        // dd($supplier);
+    }
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerate();
+        return redirect('tes');
     }
 }

@@ -32,7 +32,9 @@ class User extends Authenticatable
     protected $hidden = [
         'password'
     ];
-
+    protected $attributes = [
+        "role_id" => 1,
+    ];
     /**
      * The attributes that should be cast.
      *

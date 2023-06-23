@@ -26,13 +26,19 @@ use App\Http\Controllers\MyUnitController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::get('/units', [MyUnitController::class, 'index']);
-Route::get('/get-token', [MyUnitController::class, 'getTokenCSRF']);
-Route::get('/units/{id}', [MyUnitController::class, 'show']);
-Route::post('/units', [MyUnitController::class, 'store']);
-Route::put('/units/{id}', [MyUnitController::class, 'update']);
-Route::delete('/units/{id}', [MyUnitController::class, 'destroy']);
-
+Route::controller(MyUnitController::class)->group(function () {
+    Route::get('/units',  'index');
+    Route::get('/get-token',  'getTokenCSRF');
+    Route::get('/units/{id}',  'show');
+    Route::post('/units',  'store');
+    Route::put('/units/{id}',  'update');
+    Route::delete('/units/{id}',  'destroy');
+    Route::get('/login', 'index2');
+    Route::post('/login', 'authentiocaating');
+    Route::post('/registerAdmin', 'registerAdmin');
+    Route::post('/registerSupplier', 'registerSupplier');
+    Route::get('/logout', 'logout');
+});
 Route::controller(BarangController::class)->group(function () {
     Route::get("/barang", "index");
     Route::get("/barang/create", "create");
