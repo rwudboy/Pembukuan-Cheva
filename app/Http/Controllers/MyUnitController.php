@@ -129,6 +129,14 @@ class MyUnitController extends Controller
         $data['units'] = Unit::get();
         return view("tes", $data);
     }
+    public function registerAdminn()
+    {
+        return view('registerAdmin');
+    }
+    public function registerSupplierr()
+    {
+        return view();
+    }
     public function authentiocaating(Request $request)
     {
         $proses = $request->validate([
@@ -157,7 +165,7 @@ class MyUnitController extends Controller
             'password' => 'required|max:255'
         ]);
         $request['password'] = Hash::make($request->password);
-        $admin = User::create([$request->all()]);
+        $admin = User::create($request->all());
         // return redirect("");
         return response()->json([
             "data" => $admin
@@ -165,19 +173,26 @@ class MyUnitController extends Controller
     }
     public function registerSupplier(Request $request)
     {
-        if (Auth::user()->role_id == 2) {
-            $request->validate([
-                'nama_user' => 'required|unique:users|max:255',
-                'username' => 'required|max:255',
-                'password' => 'required|max:255'
-            ]);
-            $request['password'] = Hash::make($request->password);
-            $admin = User::create([$request->all()]);
-            // return redirect("");
-            return response()->json([
-                "data" => $admin
-            ]);
-        }
+        $request->validate([
+            'role_id' => 'required|unique:users|max:255',
+            'nama_user' => 'required|max:255',
+            'username' => 'required|max:255',
+            'password' => 'required|max:255'
+        ]);
+
+        $request['password'] = Hash::make($request->password);
+        $supplier = User::create([
+            'role_id' => $request->role_id,
+            'nama_user' => $request->nama_user,
+            'username' => $request->username,
+            'password' => $request->password
+        ]);
+        // return redirect("");
+        return response()->json([
+            "data" => $supplier
+        ]);
+
+
         // dd($supplier);
     }
     public function logout(Request $request)

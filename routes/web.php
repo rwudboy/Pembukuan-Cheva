@@ -18,6 +18,8 @@ Route::controller(MyUnitController::class)->group(function () {
     Route::get('/login', 'index2');
     Route::post('/login', 'authentiocaating');
     Route::post('/registerAdmin', 'registerAdmin');
+    Route::get('/registerAdmin', 'registerAdminn');
     Route::post('/registerSupplier', 'registerSupplier');
+    Route::get('/registerSupplier', 'registerSupplierr');
     Route::get('/logout', 'logout');
 });

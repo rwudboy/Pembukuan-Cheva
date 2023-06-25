@@ -53,7 +53,7 @@
 <body>
   <div class="container">
     <h2>Login </h2>
-    <form>
+    <form action="/login" method="post">
       <label for="username">Username:</label>
       <input type="text" id="username" name="username" placeholder="Enter your username">
       
