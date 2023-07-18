@@ -14,9 +14,9 @@ class unitController extends Controller
      */
     public function index()
     {
-        $units =Unit::all();
+        $units = Unit::all();
         return response()->json([
-            "data" =>$units
+            "data" => $units
         ]);
     }
 
@@ -38,8 +38,12 @@ class unitController extends Controller
      */
     public function store(Request $request)
     {
-        $units = Unit::create([
-            'nama_unit'=>$request->nama_unit
+        $request->validate([
+            "nama_unit" => "required",
+        ]);
+        $units = Unit::create($request->all());
+        return response()->json([
+            "data" => $units
         ]);
     }
 
@@ -62,12 +66,13 @@ class unitController extends Controller
      */
     public function edit($id)
     {
-        $units =Unit::find($id);
+        // $units = Unit::find($id);
+        $units = Unit::findOrFail($id);
         return response()->json([
-            "data" =>$units
+            "data" => $units
         ]);
     }
-    
+
 
     /**
      * Update the specified resource in storage.
@@ -78,10 +83,17 @@ class unitController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $units =Unit::find($id)
+        $request->validate([
+            "nama_unit" => "required",
+        ]);
+        // $units = Unit::find($id);
+        $units = Unit::findOrFail($id)
             ->update([
-                'nama_unit'=>$request->nama_unit
+                'nama_unit' => $request->nama_unit
             ]);
+        return response()->json([
+            "data" => $units
+        ]);
     }
 
     /**
@@ -92,10 +104,11 @@ class unitController extends Controller
      */
     public function destroy($id)
     {
-        $units = Unit::find($id)
+        // $units = Unit::find($id)
+        $units = Unit::findOrFail($id)
             ->delete();
         return response()->json([
-            "data" =>$units
+            "data" => $units
         ]);
     }
 }

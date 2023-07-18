@@ -39,11 +39,12 @@ class BarangController extends Controller
      */
     public function store(Request $request)
     {
-        $barang = barang::create([
-            "unit_id" => $request->unit_id,
-            "kode_barang" => $request->kode_barang,
-            "nama_barang" => $request->nama_barang
+        $request->validate([
+            "unit_id" => 'required',
+            "kode_barang" => 'required',
+            "nama_barang" => 'required'
         ]);
+        $barang = barang::create($request->all());
         return response()->json([
             "data" => $barang
         ]);
@@ -83,12 +84,13 @@ class BarangController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->validate([
+            "unit_id" => 'required',
+            "kode_barang" => 'required',
+            "nama_barang" => 'required'
+        ]);
         $barang = barang::find($id)
-            ->update([
-                "unit_id" => $request->unit_id,
-                "kode_barang" => $request->kode_barang,
-                "nama_barang" => $request->nama_barang
-            ]);
+            ->update($request->all());
         return response()->json([
             "data" => $barang
         ]);
