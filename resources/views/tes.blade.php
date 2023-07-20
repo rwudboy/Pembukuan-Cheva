@@ -53,17 +53,18 @@
 <body>
   <div class="container">
     <h2>Login </h2>
-    <form action="/login" method="post">
+    <form action="" method="post">
+      @csrf
       <label for="username">Username:</label>
       <input type="text" id="username" name="username" placeholder="Enter your username">
       
       <label for="password">Password:</label>
       <input type="password" id="password" name="password" placeholder="Enter your password">
       
-      <button type="button" onclick="getUnit()">Login</button>
+      <button type="submit" onclick="getUnit()">Login</button>
     </form>
   </div>
-</body>
+</body> 
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 function getUnit(){

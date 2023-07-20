@@ -174,19 +174,13 @@ class MyUnitController extends Controller
     public function registerSupplier(Request $request)
     {
         $request->validate([
-            'role_id' => 'required|unique:users|max:255',
-            'nama_user' => 'required|max:255',
+            'nama_user' => 'required|unique:users|max:255',
             'username' => 'required|max:255',
             'password' => 'required|max:255'
         ]);
 
         $request['password'] = Hash::make($request->password);
-        $supplier = User::create([
-            'role_id' => $request->role_id,
-            'nama_user' => $request->nama_user,
-            'username' => $request->username,
-            'password' => $request->password
-        ]);
+        $supplier = User::create($request->all());
         // return redirect("");
         return response()->json([
             "data" => $supplier
@@ -200,6 +194,6 @@ class MyUnitController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerate();
-        return redirect('tes');
+        return redirect('login');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\barang;
 use App\Models\barang_masuk;
 use App\Models\Unit;
 use Illuminate\Http\Request;
@@ -18,7 +19,7 @@ class BarangMasukController extends Controller
         $barangMasuk = barang_masuk::all();
 
         return response()->json([
-            "data" =>$barangMasuk
+            "data" => $barangMasuk
         ]);
     }
 
@@ -29,6 +30,8 @@ class BarangMasukController extends Controller
      */
     public function create()
     {
+        $unit = Unit::all();
+        $barang = barang::all();
         return view("");
     }
 
@@ -40,15 +43,19 @@ class BarangMasukController extends Controller
      */
     public function store(Request $request)
     {
-        $barangMasuk = barang_masuk::create([
-            'nama_supplier' =>$request->nama_supplier,
-            'barang_id' =>$request->barang_id,
-            'status' =>$request->status,
-            'keterangan' =>$request->keterangan,
-            'stok_masuk' =>$request->stok_masuk
+        $request->validate([    
+            'nama_supplier' => "required",
+            'barang_id' => "required",
+            'status' => "required",
+            'keterangan' => "required",
+            'stok_masuk' => "required|integer",
         ]);
+        // cek apakah stok barang sesuai dengan jumlah barang masuk
+        $barang = barang::findOrFail($request->barang_id);
+        $barang->increment('stok_masuk', $request->keterangan);
+        $barangMasuk = barang_masuk::create($request->all());
         return response()->json([
-            "data" =>$barangMasuk
+            "data" => $barangMasuk
         ]);
     }
 
@@ -69,13 +76,13 @@ class BarangMasukController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        $barangMasuk =barang_masuk::find($id);
-        return response()->json([
-            "data" =>$barangMasuk
-        ]);
-    }
+    // public function edit($id)
+    // {
+    //     $barangMasuk = barang_masuk::find($id);
+    //     return response()->json([
+    //         "data" => $barangMasuk
+    //     ]);
+    // }
 
     /**
      * Update the specified resource in storage.
@@ -84,18 +91,23 @@ class BarangMasukController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, barang_masuk $barangMasuk)
     {
-        $barangMasuk = barang_masuk::find($id)
-            ->update([
-                'nama_supplier' =>$request->nama_supplier,
-                'barang_id' =>$request->barang_id,
-                'status' =>$request->status,
-                'keterangan' =>$request->keterangan,
-                'stok_masuk' =>$request->stok_masuk
-            ]);
+        $request->validate([
+            'nama_supplier' => "required",
+            'barang_id' => "required",
+            'status' => "required",
+            'keterangan' => "required",
+            'stok_masuk' => "required|integer",
+        ]);
+        // Hitung selisih jumlah barang masuk saat mengubah data
+        $selisih = $request->keterangan - $barangMasuk->keterangan;
+        // tambah atau kurangi stok barang sesuai dengan selisih 
+        $barang = barang::findOrFail($request->barang_id);
+        $barang->increment("stok_masuk", $selisih);
+        $barangMasuk->update($request->all());
         return response()->json([
-            "data" =>$barangMasuk
+            "data" => $barangMasuk
         ]);
     }
 
@@ -105,12 +117,13 @@ class BarangMasukController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(barang_masuk $barangMasuk)
     {
-        $barangMasuk = barang_masuk::find($id)
-            ->delete();
+        $barang = barang::findOrFail($barangMasuk->barang_id);
+        $barang->decrement('stok_masuk', $barangMasuk->keterangan);
+        $barangMasuk->delete();
         return response()->json([
-            "data" =>$barangMasuk
+            "data" => $barangMasuk
         ]);
     }
 }

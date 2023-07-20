@@ -39,14 +39,16 @@ class BarangPinjamController extends Controller
      */
     public function store(Request $request)
     {
-        $barangPinjam = barang_pinjam::create([
-            'barang_masuk_id' => $request->barang_masuk_id,
-            'keterangan' => $request->keterangan,
-            'status' => $request->status,
-            'stok_pinjam' => $request->stok_pinjam,
-            'tanggal_pinjam' => $request->tanggal_pinjam,
-            'tanggal_pengembalian' => $request->tanggal_pengembalian
+        $request->validate([
+            'barang_masuk_id' => "required",
+            'keterangan' =>  "required",
+            'status' =>  "required",
+            'stok_pinjam' => "required|interger",
+            'tanggal_pinjam' =>  "required|date",
+            'tanggal_pengembalian' =>  "required|date",
         ]);
+        
+        $barangPinjam = barang_pinjam::create($request->all());
         return response()->json([
             "data" => $barangPinjam
         ]);
