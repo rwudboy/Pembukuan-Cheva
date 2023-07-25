@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\BarangMasukController;
 use App\Http\Controllers\BarangPinjamController;
@@ -38,6 +39,11 @@ Route::controller(MyUnitController::class)->group(function () {
     Route::post('/registerAdmin', 'registerAdmin');
     Route::post('/registerSupplier', 'registerSupplier');
     Route::get('/logout', 'logout');
+});
+Route::controller(AuthController::class)->group(function () {
+    Route::post("/register", "register");
+    Route::post("/login", "login");
+    Route::post("/logout", "logout")->middleware("auth:sanctum");
 });
 Route::controller(BarangController::class)->group(function () {
     Route::get("/barang", "index");
