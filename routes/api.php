@@ -47,10 +47,11 @@ Route::controller(AuthController::class)->group(function () {
 });
 Route::controller(BarangController::class)->group(function () {
     Route::get("/barang", "index");
+    Route::get("/barang/show/{id}", "show");
     Route::get("/barang/create", "create");
     Route::post("/barang/store", "store");
     Route::get("/barang/edit/{id}", "edit");
-    Route::put("/barang/update/{id}", "update");
+    Route::post("/barang/update/{id}", "update");
     Route::delete("/barang/delete/{id}", "destroy");
 });
 Route::controller(BarangMasukController::class)->group(function () {

@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Unit;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class barang extends Model
 {
@@ -14,4 +16,14 @@ class barang extends Model
         'kode_barang',
         'nama_barang',
     ];
+    protected $guarded = [];
+    /**
+     * Get the user that owns the RentLogs
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function unit()
+    {
+        return $this->belongsTo(Unit::class);
+    }
 }

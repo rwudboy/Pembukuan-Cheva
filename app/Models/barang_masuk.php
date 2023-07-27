@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class barang_masuk extends Model
 {
@@ -17,8 +18,8 @@ class barang_masuk extends Model
         'stok_masuk'
     ];
 
-    public function Barang()
+    public function Barang():  BelongsTo
     {
-        return $this->belongsTo(barang::class, 'barang_id');
+        return $this->belongsTo(barang::class, 'barang_id', "id");
     }
 }

@@ -16,9 +16,9 @@ return new class extends Migration
         Schema::create('barangs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('unit_id');
+            $table->foreign('unit_id')->references('id')->on('units')->onDelete('cascade')->onUpdate('cascade');
             $table->string('kode_barang');
             $table->string('nama_barang');
-            $table->foreign('unit_id')->on('units')->references('id')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }

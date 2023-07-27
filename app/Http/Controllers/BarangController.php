@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BarangRequests;
+use App\Http\Resources\Barang\BarangResource;
 use App\Models\barang;
 use App\Models\barang_masuk;
+use Exception;
 use Illuminate\Http\Request;
 
 class BarangController extends Controller
@@ -13,12 +16,11 @@ class BarangController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $barang = barang::all();
-        return response()->json([
-            "data" => $barang
-        ]);
+        // dd($request->all());
+        $barang = barang::with("unit:id,nama_unit")->get();
+        return BarangResource::collection($barang);
     }
 
     /**
@@ -28,7 +30,7 @@ class BarangController extends Controller
      */
     public function create()
     {
-        return view("");
+        // return view("");
     }
 
     /**
@@ -37,17 +39,22 @@ class BarangController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(BarangRequests $request)
     {
-        $request->validate([
-            "unit_id" => 'required',
-            "kode_barang" => 'required',
-            "nama_barang" => 'required'
-        ]);
-        $barang = barang::create($request->all());
-        return response()->json([
-            "data" => $barang
-        ]);
+        // dd($request->all());
+        try {
+            $barang = barang::create($request->all());
+            // return new BarangResource($barang);
+            return response()->json([
+                'success' => true,
+                'message' => 'Data created successfully',
+                'data' => $$barang
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                "message" => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
@@ -58,7 +65,8 @@ class BarangController extends Controller
      */
     public function show($id)
     {
-        //
+        $barang = barang::with("unit:id,nama_unit")->findOrFail($id);
+        return new BarangResource($barang);
     }
 
     /**
@@ -73,6 +81,8 @@ class BarangController extends Controller
         return response()->json([
             "data" => $barang
         ]);
+        // $barang = barang::with("unit:id,nama_unit")->findOrFail($id);
+        // return new BarangResource($barang);
     }
 
     /**
@@ -82,18 +92,20 @@ class BarangController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(BarangRequests $request, string $id)
     {
-        $request->validate([
-            "unit_id" => 'required',
-            "kode_barang" => 'required',
-            "nama_barang" => 'required'
-        ]);
-        $barang = barang::find($id)
-            ->update($request->all());
+        $barang = barang::find($id)->update($request->all());
         return response()->json([
+            "success" => true,
+            "message" => "Data updated successfully",
             "data" => $barang
-        ]);
+        ], 200);
+        // try {
+        // } catch (Exception $e) {
+        //     return response()->json([
+        //         "message" => $e->getMessage()
+        //     ], 500);
+        // }
     }
 
     /**
@@ -107,6 +119,8 @@ class BarangController extends Controller
         $barang = barang::find($id)
             ->delete();
         return response()->json([
+            "success" => true,
+            "message" => "Data deleted successfully",
             "data" => $barang
         ]);
     }
