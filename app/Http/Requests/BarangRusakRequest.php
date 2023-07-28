@@ -4,9 +4,17 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class BarangRequests extends FormRequest
+class BarangRusak extends FormRequest
 {
-
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {
+        return false;
+    }
 
     /**
      * Get the validation rules that apply to the request.
@@ -16,9 +24,7 @@ class BarangRequests extends FormRequest
     public function rules()
     {
         return [
-            "unit_id" => 'required|exists:units,id',
-            "kode_barang" => 'required|string|',
-            "nama_barang" => 'required|string'
+            //
         ];
     }
 }

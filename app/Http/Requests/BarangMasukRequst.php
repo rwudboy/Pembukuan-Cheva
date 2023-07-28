@@ -15,7 +15,7 @@ class BarangMasukRequst extends FormRequest
     public function rules()
     {
         return [
-            'nama_supplier' => "required|string|unique:barang_masuks",
+            'nama_supplier' => "required|string",
             'barang_id' => "required|exists:barangs,id",
             'status' => "required|string",
             'keterangan' => "required|string",
