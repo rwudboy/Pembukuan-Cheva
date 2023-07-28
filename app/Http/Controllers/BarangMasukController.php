@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\BarangMasukResource;
 use App\Models\barang;
 use App\Models\barang_masuk;
 use App\Models\Unit;
@@ -16,11 +17,9 @@ class BarangMasukController extends Controller
      */
     public function index()
     {
-        $barangMasuk = barang_masuk::all();
+        $barangMasuk = barang_masuk::with("Barang:id,nama_supplier,barang")->get();
 
-        return response()->json([
-            "data" => $barangMasuk
-        ]);
+        return BarangMasukResource::collection($barangMasuk);
     }
 
     /**
@@ -43,7 +42,7 @@ class BarangMasukController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([    
+        $request->validate([
             'nama_supplier' => "required",
             'barang_id' => "required",
             'status' => "required",
