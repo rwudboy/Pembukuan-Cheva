@@ -6,15 +6,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class BarangMasukRequst extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return false;
-    }
 
     /**
      * Get the validation rules that apply to the request.
@@ -24,7 +15,11 @@ class BarangMasukRequst extends FormRequest
     public function rules()
     {
         return [
-            //
+            'nama_supplier' => "required|string|unique:barang_masuks",
+            'barang_id' => "required|exists:barangs,id",
+            'status' => "required|string",
+            'keterangan' => "required|string",
+            'stok_masuk' => "required|integer",
         ];
     }
 }

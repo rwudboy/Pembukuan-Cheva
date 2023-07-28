@@ -59,7 +59,8 @@ Route::controller(BarangMasukController::class)->group(function () {
     Route::get("/barang_masuk/create", "create");
     Route::post("/barang_masuk/store", "store");
     Route::get("/barang_masuk/edit/{id}", "edit");
-    Route::put("/barang_masuk/update/{id}", "update");
+    Route::get("/barang_masuk/show/{id}", "show");
+    Route::post("/barang_masuk/update/{id}", "update");
     Route::delete("/barang_masuk/delete/{id}", "destroy");
 });
 Route::controller(BarangPinjamController::class)->group(function () {
