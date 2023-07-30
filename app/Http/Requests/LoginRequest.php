@@ -20,4 +20,4 @@ class LoginRequest extends FormRequest
             'password' => 'required|max:255'
         ];
     }
-}
+} 

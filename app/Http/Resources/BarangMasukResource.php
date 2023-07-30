@@ -14,7 +14,7 @@ class BarangMasukResource extends JsonResource
      */
     public function toArray($request)
     {
-        return [
+        return [ 
             "id" => $this->id,
             "nama_supplier" => $this->nama_supplier,
             "barang" => $this->whenLoaded("Barang"),

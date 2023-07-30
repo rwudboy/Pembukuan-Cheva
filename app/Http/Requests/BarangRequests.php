@@ -22,3 +22,4 @@ class BarangRequests extends FormRequest
         ];
     }
 }
+ 
