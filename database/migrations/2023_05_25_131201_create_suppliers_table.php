@@ -13,9 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('mahasiswas', function (Blueprint $table) {
+        Schema::create('suppliers', function (Blueprint $table) {
             $table->id();
-            $table->string("nama",250);
+            $table->foreignId('supplier_nama_user_id');
+            $table->foreign('supplier_nama_user_id')->on('users')->references('id')->onDelete('cascade')->onUpdate('cascade');
+            $table->string('email')->unique();
+            $table->string('alamat');
             $table->timestamps();
         });
     }
@@ -27,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('mahasiswas');
+        Schema::dropIfExists('suppliers');
     }
 };
