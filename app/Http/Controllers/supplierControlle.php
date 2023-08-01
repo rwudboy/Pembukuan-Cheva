@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SupplierRequest;
+use App\Http\Resources\SupplierResource;
+use App\Models\Supplier;
+use Exception;
 use Illuminate\Http\Request;
 
 class supplierControlle extends Controller
@@ -13,7 +17,8 @@ class supplierControlle extends Controller
      */
     public function index()
     {
-        //
+        $supplier = Supplier::with("user:id,role_id,nama_user")->get();
+        return SupplierResource::collection($supplier);
     }
 
     /**
@@ -32,9 +37,20 @@ class supplierControlle extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(SupplierRequest $request)
     {
-        //
+        try {
+            $supplier = Supplier::create($request->all());
+            return response()->json([
+                "success" => true,
+                "message" => "Data created successfully",
+                "data" => $supplier
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                "message" => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
@@ -45,7 +61,8 @@ class supplierControlle extends Controller
      */
     public function show($id)
     {
-        //
+        $supplier = Supplier::with("user:id,role_id,nama_user")->findOrFail($id);
+        return new SupplierResource($supplier);
     }
 
     /**
@@ -56,7 +73,10 @@ class supplierControlle extends Controller
      */
     public function edit($id)
     {
-        //
+        $supplier = Supplier::findOrFail($id);
+        return response()->json([
+            "data" => $supplier
+        ]);
     }
 
     /**
@@ -66,9 +86,20 @@ class supplierControlle extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(SupplierRequest $request, string $id)
     {
-        //
+        try {
+            $supplier = Supplier::find($id)->update($request->all());
+            return response()->json([
+                "success" => true,
+                "message" => "Data updated successfully",
+                "data" => $supplier
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                "message" => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
@@ -79,6 +110,12 @@ class supplierControlle extends Controller
      */
     public function destroy($id)
     {
-        //
+        $barangMasuk = Supplier::find($id)
+            ->delete();
+        return response()->json([
+            "success" => true,
+            "message" => "Data deleted successfully",
+            "data" => $barangMasuk
+        ]);
     }
 }

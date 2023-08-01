@@ -17,6 +17,7 @@ class SupplierResource extends JsonResource
         return [
             "id" => $this->id,
             "supplier_nama_user_id" => $this->whenLoaded("user"),
+            "ID_Supplier" => $this->ID_Supplier,
             "email" => $this->email,
             "alamat" => $this->alamat,
             "created_at" => $this->created_at,

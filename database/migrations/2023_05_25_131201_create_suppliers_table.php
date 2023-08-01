@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('supplier_nama_user_id');
             $table->foreign('supplier_nama_user_id')->on('users')->references('id')->onDelete('cascade')->onUpdate('cascade');
+            $table->integer('ID_Supplier');
             $table->string('email')->unique();
             $table->string('alamat');
             $table->timestamps();

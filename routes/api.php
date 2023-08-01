@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Route;
 
 
 use App\Http\Controllers\MyUnitController;
+use App\Http\Controllers\supplierControlle;
 
 /*
 |--------------------------------------------------------------------------
@@ -62,6 +63,16 @@ Route::controller(BarangMasukController::class)->group(function () {
     Route::get("/barang_masuk/show/{id}", "show");
     Route::post("/barang_masuk/update/{id}", "update");
     Route::delete("/barang_masuk/delete/{id}", "destroy");
+});
+Route::controller(supplierControlle::class)->group(function (){
+    Route::get("/supplier", "index");
+    Route::get("/supplier/create", "create");
+    Route::post("/supplier/store", "store");
+    Route::get("/supplier/edit/{id}", "edit");
+    Route::get("/supplier/show/{id}", "show");
+    Route::post("/supplier/update/{id}", "update");
+    Route::delete("/supplier/delete/{id}", "destroy");
+
 });
 Route::controller(BarangPinjamController::class)->group(function () {
     Route::get("/barang_pinjam", "index");

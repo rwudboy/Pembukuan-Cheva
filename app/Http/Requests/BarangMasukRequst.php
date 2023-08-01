@@ -23,4 +23,3 @@ class BarangMasukRequst extends FormRequest
         ];
     }
 }
- 

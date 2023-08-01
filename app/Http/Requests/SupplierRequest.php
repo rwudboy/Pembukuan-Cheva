@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SupplireRequest extends FormRequest
+class SupplierRequest extends FormRequest
 {
 
     /**
@@ -16,8 +16,9 @@ class SupplireRequest extends FormRequest
     {
         return [
             "supplier_nama_user_id" => "required|exists:users,id",
+            "ID_Supplier" => "required|unique:suppliers|min:10|integer",
             "email" => "required|unique:suppliers",
-            "alamat" => "required"
+            "alamat" => "required",
         ];
     }
 }
