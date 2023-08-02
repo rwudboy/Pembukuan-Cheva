@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BarangRusakRequest;
+use Exception;
+use App\Models\barang_masuk;
 use App\Models\barang_rusak;
 use Illuminate\Http\Request;
+use App\Http\Resources\BarangRusakResourcs;
 
 class BarangRusakController extends Controller
 {
@@ -14,11 +18,9 @@ class BarangRusakController extends Controller
      */
     public function index()
     {
-        $barangRusak = barang_rusak::all();
+        $barangRusak = barang_rusak::with("Barang_masuk")->get();
 
-        return response()->json([
-            "data" => $barangRusak
-        ]);
+        return BarangRusakResourcs::collection($barangRusak);
     }
 
     /**
@@ -37,16 +39,32 @@ class BarangRusakController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(BarangRusakRequest $request, Request $request2)
     {
-        $barangRusak = barang_rusak::create([
-            'barang_masuk_id' => $request->barang_masuk_id,
-            'keterangan' => $request->keterangan,
-            'stok_keluar' => $request->stok_keluar
-        ]);
-        return response()->json([
-            "data" => $barangRusak
-        ]);
+        dd($request->all());
+        $barangMasuk = barang_masuk::findOrFail($request->barang_masuk_id)->only("stok_masuk");
+        // $jumlah = $barangMasuk->barang_id()->where("barang_masuk_id", $request->id)->first();
+        if ($barangMasuk->stok_masuk < $request->stok_keluar) {
+            return response()->json([
+                'error' => 'Stok barang tidak cukup'
+            ], 400);
+        }
+        try {
+            $barangMasuk->decrement('stok_masuk', $request->stok_keluar);
+            $barangRusak = barang_rusak::create($request->all());
+            // Kurangangi stok_masuk dii tabel barang masuk
+            // $barangMasuk->stok_masuk -= $request->stok_keluar;
+            // $barangMasuk->save();
+            return response()->json([
+                "success" => true,
+                "message" => " successfully",
+                "data" => $barangRusak
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                "message" => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
