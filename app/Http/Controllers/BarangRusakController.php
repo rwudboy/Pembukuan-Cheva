@@ -42,19 +42,25 @@ class BarangRusakController extends Controller
     public function store(BarangRusakRequest $request, Request $request2)
     {
         dd($request->all());
-        $barangMasuk = barang_masuk::findOrFail($request->barang_masuk_id)->only("stok_masuk");
         // $jumlah = $barangMasuk->barang_id()->where("barang_masuk_id", $request->id)->first();
-        if ($barangMasuk->stok_masuk < $request->stok_keluar) {
-            return response()->json([
-                'error' => 'Stok barang tidak cukup'
-            ], 400);
-        }
+        // if ($barangMasuk->stok_masuk < $request->stok_keluar) {
+        //     return response()->json([
+        //         'error' => 'Stok barang tidak cukup'
+        //     ], 400);
+        // }
         try {
-            $barangMasuk->decrement('stok_masuk', $request->stok_keluar);
-            $barangRusak = barang_rusak::create($request->all());
-            // Kurangangi stok_masuk dii tabel barang masuk
-            // $barangMasuk->stok_masuk -= $request->stok_keluar;
-            // $barangMasuk->save();
+
+            $request2->validate([
+                'barang_masuk_id' => "required|exists:barang_masuks,id",
+                'keterangan' => "required",
+                'stok_keluar' => "required",
+            ]);
+            // $barangMasuk->decrement('stok_masuk', $request->stok_keluar);
+            $barangRusak = barang_rusak::create($request2->all());
+            $barangMasuk = barang_masuk::findOrFail($request2->barang_masuk_id);
+            //Kurangangi stok_masuk dii tabel barang masuk
+            $barangMasuk->stok_masuk -= $request2->stok_keluar;
+            $barangMasuk->save();
             return response()->json([
                 "success" => true,
                 "message" => " successfully",

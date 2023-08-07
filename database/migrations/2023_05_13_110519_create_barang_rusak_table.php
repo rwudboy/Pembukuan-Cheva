@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('barang_rusak', function (Blueprint $table) {
+        Schema::create('barang_rusaks', function (Blueprint $table) {
             $table->id();
             $table->foreignId('barang_masuk_id');
             $table->foreign('barang_masuk_id')->on('barang_masuks')->references('id')->onDelete('cascade')->onUpdate('cascade');
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('barang_rusak');
+        Schema::dropIfExists('barang_rusaks');
     }
 };

@@ -17,7 +17,7 @@ class BarangRequests extends FormRequest
     {
         return [
             "unit_id" => 'required|exists:units,id',
-            "kode_barang" => 'required|string|',
+            "kode_barang" => 'required|string',
             "nama_barang" => 'required|string'
         ];
     }
