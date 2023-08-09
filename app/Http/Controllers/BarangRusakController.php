@@ -8,6 +8,7 @@ use App\Models\barang_masuk;
 use App\Models\barang_rusak;
 use Illuminate\Http\Request;
 use App\Http\Resources\BarangRusakResourcs;
+use Illuminate\Support\Facades\DB;
 
 class BarangRusakController extends Controller
 {
@@ -39,37 +40,42 @@ class BarangRusakController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(BarangRusakRequest $request, Request $request2)
+    public function store(BarangRusakRequest $request2, Request $request)
     {
         dd($request->all());
-        // $jumlah = $barangMasuk->barang_id()->where("barang_masuk_id", $request->id)->first();
-        // if ($barangMasuk->stok_masuk < $request->stok_keluar) {
-        //     return response()->json([
-        //         'error' => 'Stok barang tidak cukup'
-        //     ], 400);
-        // }
-        try {
+        $request->validate([
+            'barang_masuk_id' => "required|exists:barang_masuks,id",
+            'keterangan' => "required",
+            'stok_keluar' => "required",
+        ]);
+        $barangMasuk = barang_masuk::findOrFail($request->barang_masuk_id)->only("stok_masuk");
+        if ($barangMasuk->stok_masuk < $request->stok_keluar) {
+            return response()->json([
+                'error' => 'Stok barang tidak cukup/ tidak ada',
+            ], 400);
+        } else {
 
-            $request2->validate([
-                'barang_masuk_id' => "required|exists:barang_masuks,id",
-                'keterangan' => "required",
-                'stok_keluar' => "required",
-            ]);
-            // $barangMasuk->decrement('stok_masuk', $request->stok_keluar);
-            $barangRusak = barang_rusak::create($request2->all());
-            $barangMasuk = barang_masuk::findOrFail($request2->barang_masuk_id);
-            //Kurangangi stok_masuk dii tabel barang masuk
-            $barangMasuk->stok_masuk -= $request2->stok_keluar;
-            $barangMasuk->save();
-            return response()->json([
-                "success" => true,
-                "message" => " successfully",
-                "data" => $barangRusak
-            ], 200);
-        } catch (Exception $e) {
-            return response()->json([
-                "message" => $e->getMessage()
-            ], 500);
+            try {
+
+                // $barangMasuk->decrement('stok_masuk', $request->stok_keluar);
+                DB::beginTransaction();
+                $barangRusak = barang_rusak::create($request->all());
+                $barangMasuk = barang_masuk::findOrFail($request->barang_masuk_id);
+                //Kurangangi stok_masuk dii tabel barang masuk
+                $barangMasuk->stok_masuk -= $request->stok_keluar;
+                $barangMasuk->save();
+                DB::commit();
+                return response()->json([
+                    "success" => true,
+                    "message" => " successfully",
+                    "data" => $barangRusak
+                ], 200);
+            } catch (Exception $e) {
+                DB::rollBack();
+                return response()->json([
+                    "message" => $e->getMessage()
+                ], 500);
+            }
         }
     }
 

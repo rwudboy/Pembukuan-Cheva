@@ -15,7 +15,7 @@ class BarangRusakRequest extends FormRequest
     public function rules()
     {
         return [
-            'barang_masuk_id' => "required|exists:barang_masuks",
+            'barang_masuk_id' => "required|exists:barang_masuks,id",
             'keterangan' => "required",
             'stok_keluar' => "required",
         ];
