@@ -45,6 +45,10 @@ Route::controller(AuthController::class)->group(function () {
     Route::post("/register", "register");
     Route::post("/login", "login");
     Route::post("/logout", "logout")->middleware("auth:sanctum");
+    Route::get("/forgot-password", "index")->middleware('guest')->name('password.request');
+    Route::post("/forgot-password", "forgottpassword")->middleware('guest')->name('password.email');
+    Route::get("/reset-password/{token}", "token")->middleware('guest')->name('password.reset');
+    Route::post("/reset-password", "update")->middleware('guest')->name('password.update');
 });
 Route::controller(BarangController::class)->group(function () {
     Route::get("/barang", "index");
