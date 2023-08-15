@@ -90,8 +90,8 @@ Route::controller(BarangRusakController::class)->group(function () {
     Route::get("/barang_rusak", "index");
     Route::get("/barang_rusak/create", "create");
     Route::post("/barang_rusak/store", "store");
-    Route::get("/barang_rusak/edit/{id}", "edit");
-    Route::put("/barang_rusak/update/{id}", "update");
+    Route::get("/barang_rusak/show/{id}", "show");
+    Route::post("/barang_rusak/update/{id}", "update");
     Route::delete("/barang_rusak/delete/{id}", "destroy");
 });
 Route::controller(unitController::class)->group(function () {

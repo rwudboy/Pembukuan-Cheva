@@ -17,7 +17,7 @@ class BarangRusakRequest extends FormRequest
         return [
             'barang_masuk_id' => "required|exists:barang_masuks,id",
             'keterangan' => "required",
-            'stok_keluar' => "required",
+            'stok_keluar' => "required|integer",
         ];
     }
 }
