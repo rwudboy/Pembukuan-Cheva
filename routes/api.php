@@ -68,7 +68,7 @@ Route::controller(BarangMasukController::class)->group(function () {
     Route::post("/barang_masuk/update/{id}", "update");
     Route::delete("/barang_masuk/delete/{id}", "destroy");
 });
-Route::controller(supplierControlle::class)->group(function (){
+Route::controller(supplierControlle::class)->group(function () {
     Route::get("/supplier", "index");
     Route::get("/supplier/create", "create");
     Route::post("/supplier/store", "store");
@@ -76,14 +76,13 @@ Route::controller(supplierControlle::class)->group(function (){
     Route::get("/supplier/show/{id}", "show");
     Route::post("/supplier/update/{id}", "update");
     Route::delete("/supplier/delete/{id}", "destroy");
-
 });
 Route::controller(BarangPinjamController::class)->group(function () {
     Route::get("/barang_pinjam", "index");
     Route::get("/barang_pinjam/create", "create");
     Route::post("/barang_pinjam/store", "store");
-    Route::get("/barang_pinjam/edit/{id}", "edit");
-    Route::put("/barang_pinjam/update/{id}", "update");
+    Route::get("/barang_pinjam/show/{id}", "show");
+    Route::post("/barang_pinjam/pengembalian/{id}", "update");
     Route::delete("/barang_pinjam/delete/{id}", "destroy");
 });
 Route::controller(BarangRusakController::class)->group(function () {

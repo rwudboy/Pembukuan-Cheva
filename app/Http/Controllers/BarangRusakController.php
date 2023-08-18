@@ -8,7 +8,7 @@ use App\Models\barang_masuk;
 use App\Models\barang_rusak;
 use Illuminate\Http\Request;
 use App\Http\Resources\BarangRusakResourcs;
-use Illuminate\Support\Facades\DB;
+// use Illuminate\Support\Facades\DB;
 
 class BarangRusakController extends Controller
 {
@@ -58,20 +58,20 @@ class BarangRusakController extends Controller
             try {
 
                 // $barangMasuk->decrement('stok_masuk', $request->stok_keluar);
-                DB::beginTransaction();
+                // DB::beginTransaction();
                 $barangRusak = barang_rusak::create($request->all());
                 $barangMasuk = barang_masuk::findOrFail($request->barang_masuk_id);
                 //Kurangangi stok_masuk dii tabel barang masuk
                 $barangMasuk->stok_masuk -= $request->stok_keluar;
                 $barangMasuk->save();
-                DB::commit();
+                // DB::commit();
                 return response()->json([
                     "success" => true,
                     "message" => " successfully",
                     "data" => $barangRusak
                 ], 200);
             } catch (Exception $e) {
-                DB::rollBack();
+                // DB::rollBack();
                 return response()->json([
                     "message" => $e->getMessage()
                 ], 500);
@@ -124,20 +124,20 @@ class BarangRusakController extends Controller
             try {
 
                 // $barangMasuk->decrement('stok_masuk', $request->stok_keluar);
-                DB::beginTransaction();
+                // DB::beginTransaction();
                 $barangRusak = barang_rusak::findOrFail($id)->update($request->all());
                 $barangMasuk = barang_masuk::findOrFail($request->barang_masuk_id);
                 //Kurangangi stok_masuk dii tabel barang masuk
                 $barangMasuk->stok_masuk -= $request->stok_keluar;
                 $barangMasuk->save();
-                DB::commit();
+                // DB::commit();
                 return response()->json([
                     "success" => true,
                     "message" => " successfully",
                     "data" => $barangRusak
                 ], 200);
             } catch (Exception $e) {
-                DB::rollBack();
+                // DB::rollBack();
                 return response()->json([
                     "message" => $e->getMessage()
                 ], 500);
@@ -151,14 +151,14 @@ class BarangRusakController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy( $id)
+    public function destroy($id)
     {
-        $barangRusak = barang_rusak::find($id)
+        $barangRusak = barang_rusak::findOrFail($id)
             ->delete();
-        // $barangKeluar =$barangRusak->id->where('barang_masuk_id', $barangRusak->barang_masuk_id)->first();
-        // //Kurangangi stok_masuk dii tabel barang masuk
-        // $barangKeluar->stok_masuk += $barangRusak->stok_keluar;
-        // $barangKeluar->save();
+        $barangKeluar = $barangRusak->where('barang_masuk_id', $barangRusak->barang_masuk_id)->first();
+        //Kurangangi stok_masuk dii tabel barang masuk
+        $barangKeluar->stok_masuk += $barangRusak->stok_keluar;
+        $barangKeluar->save();
         return response()->json([
             "data" => $barangRusak
         ]);
