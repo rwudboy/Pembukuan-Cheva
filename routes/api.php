@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AnalisisController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\BarangMasukController;
@@ -92,6 +93,9 @@ Route::controller(BarangRusakController::class)->group(function () {
     Route::get("/barang_rusak/show/{id}", "show");
     Route::post("/barang_rusak/update/{id}", "update");
     Route::delete("/barang_rusak/delete/{id}", "destroy");
+});
+Route::controller(AnalisisController::class)->group(function (){
+    Route::get("/laporan", "laporan");
 });
 Route::controller(unitController::class)->group(function () {
     Route::get("/unit", "index");
