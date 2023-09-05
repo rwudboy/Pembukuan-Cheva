@@ -93,6 +93,7 @@ Route::middleware("api")->group(function () {
     });
     Route::controller(AnalisisController::class)->group(function () {
         Route::get("/laporan", "laporan");
+        Route::get("/datapengguna", "datapengguna");
     });
     Route::controller(unitController::class)->group(function () {
         Route::get("/unit", "index");
