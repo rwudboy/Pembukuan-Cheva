@@ -50,9 +50,6 @@ class BarangPinjamController extends Controller
         } else {
 
             try {
-
-                // $barangMasuk->decrement('stok_masuk', $request->stok_pinjam);
-                // DB::beginTransaction();
                 $barangPinjam = barang_pinjam::create($request->all());
                 $barangMasuk = barang_masuk::findOrFail($request->barang_masuk_id);
                 //Kurangangi stok_masuk dii tabel barang masuk
@@ -109,28 +106,19 @@ class BarangPinjamController extends Controller
     public function update(BarangPinjamRequest $request, $id)
     {
         $barangMasuk = barang_masuk::findOrFail($request->barang_masuk_id);
-        // if ($barangMasuk->stok_masuk < $request->stok_pinjam) {
-        //     return response()->json([
-        //         'error' => 'Stok barang tidak cukup/ tidak ada',
-        //     ], 400);
-        // } else {
         try {
-
-            // $barangMasuk->decrement('stok_masuk', $request->stok_pinjam);
-            // DB::beginTransaction();
             $barangPinjam = barang_pinjam::findOrFail($id)->where("barang_masuk_id", $request->barang_masuk_id)->where("tanggal_pengembalian", null);
             $tanggalPinjam = $barangPinjam->first();
             $megitungTanggal = $barangPinjam->count();
             // dd($megitungTanggal);    
             $barangMasuk = barang_masuk::findOrFail($request->barang_masuk_id);
-            if ($megitungTanggal == 8) { // Angka selalu di ganti jika tidak berhasil, cara lihat lakukan  dd($megitungTanggal);
+            if ($megitungTanggal == 1) { // Angka selalu di ganti jika tidak berhasil, cara lihat lakukan  dd($megitungTanggal);
                 $tanggalPinjam->tanggal_pengembalian = Carbon::now()->toDateString();
                 //Kurangangi stok_masuk dii tabel barang masuk
                 $barangMasuk->stok_masuk += $request->stok_pinjam;
                 // dd($tanggalPinjam);
-                // $barangMasuk->save();
+                $barangMasuk->save();
                 $tanggalPinjam->save();
-                // DB::commit();
                 return response()->json([
                     "success" => true,
                     "message" => " successfully",
@@ -138,7 +126,6 @@ class BarangPinjamController extends Controller
                 ], 200);
             }
         } catch (Exception $e) {
-            // DB::rollBack();
             return response()->json([
                 "message" => $e->getMessage()
             ], 500);
@@ -156,10 +143,6 @@ class BarangPinjamController extends Controller
     {
         $barangPinjam = barang_pinjam::findOrFail($id)
             ->delete();
-        // $barangKeluar = $barangPinjam->where('barang_masuk_id', $barangPinjam->barang_masuk_id)->first();
-        // //Kurangangi stok_masuk dii tabel barang masuk
-        // $barangKeluar->stok_masuk += $barangPinjam->stok_keluar;
-        // $barangKeluar->save();
         return response()->json([
             "data" => $barangPinjam
         ]);

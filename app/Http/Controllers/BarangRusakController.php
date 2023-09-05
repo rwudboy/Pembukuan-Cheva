@@ -42,12 +42,6 @@ class BarangRusakController extends Controller
      */
     public function store(BarangRusakRequest $request)
     {
-        // dd($request->all());
-        // $request->validate([
-        //     'barang_masuk_id' => "required|exists:barang_masuks,id",
-        //     'keterangan' => "required",
-        //     'stok_keluar' => "required",
-        // ]);
         $barangMasuk = barang_masuk::findOrFail($request->barang_masuk_id);
         if ($barangMasuk->stok_masuk < $request->stok_keluar) {
             return response()->json([
@@ -155,10 +149,6 @@ class BarangRusakController extends Controller
     {
         $barangRusak = barang_rusak::findOrFail($id)
             ->delete();
-        $barangKeluar = $barangRusak->where('barang_masuk_id', $barangRusak->barang_masuk_id)->first();
-        //Kurangangi stok_masuk dii tabel barang masuk
-        $barangKeluar->stok_masuk += $barangRusak->stok_keluar;
-        $barangKeluar->save();
         return response()->json([
             "data" => $barangRusak
         ]);

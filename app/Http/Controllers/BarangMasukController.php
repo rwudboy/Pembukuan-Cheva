@@ -31,9 +31,6 @@ class BarangMasukController extends Controller
      */
     public function create()
     {
-        $unit = Unit::all();
-        $barang = barang::all();
-        return view("");
     }
 
     /**

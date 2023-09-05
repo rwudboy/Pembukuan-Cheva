@@ -100,12 +100,6 @@ class BarangController extends Controller
             "message" => "Data updated successfully",
             "data" => $barang
         ], 200);
-        // try {
-        // } catch (Exception $e) {
-        //     return response()->json([
-        //         "message" => $e->getMessage()
-        //     ], 500);
-        // }
     }
 
     /**
